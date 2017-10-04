@@ -1,0 +1,80 @@
+<section class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Add Movies</h3>
+    </div>
+    <div class="panel-body">
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+          <input type="text" class="form-control" id="movie-name" placeholder="Enter the Movie Name" ngModel name="movieName" required
+            #name="ngModel" [ngClass]="{isValid: name.valid && name.touched, isInvalid: !name.valid && name.touched}">
+          <span class="help-block" *ngIf="!name.valid && name.touched">Please enter a valid Movie Name</span>
+        </div>
+        <!-- movie-name ends here -->
+        <div class="form-group col-md-1" id="rating">
+          <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="Rating" size="15" ngModel="rating" required
+            pattern="^[1-5]$" #rating="ngModel" [ngClass]="{isValid: rating.valid && rating.touched, isInvalid: !rating.valid && rating.touched}">
+        </div>
+        <!-- rating ends here -->
+        <span class="help-block clear" *ngIf="!rating.valid && rating.touched">Please Rate the Movie on a scale of 1 to 5</span>
+        <div class="form-group">
+          <input type="date" class="form-control" id="release-date" placeholder="Release Date" ngModel name="releaseDate" required
+            #releaseDate="ngModel" [ngClass]="{isValid: releaseDate.valid && releaseDate.touched, isInvalid: !releaseDate.valid && releaseDate.touched}">
+          <span class="help-block" *ngIf="!releaseDate.valid && releaseDate.touched">Please enter a valid Release Date</span>
+        </div>
+        <!-- release date ends here -->
+        <div class="form-group">
+          <input type="text" class="form-control" id="movie-description" placeholder="Enter the description of the Movie" ngModel name="movieDescription">
+          <!-- required #description="ngModel" [ngClass]="{isValid: description.valid && description.touched, isInvalid: !description.valid && description.touched}"> -->
+          <!-- <span class="help-block" *ngIf="!description.valid && description.touched">Please enter a valid description for the movie</span> -->
+        </div>
+        <!-- movie description ends here -->
+        <div class="form-group">
+          <input type="url" class="form-control" id="movie-image" placeholder="Movie Poster" ngModel name="moviePoster" required #image="ngModel"
+            [ngClass]="{isValid: image.valid && image.touched, isInvalid: !image.valid && image.touched}" pattern="(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)">
+          <span class="help-block" *ngIf="!image.valid && image.touched">Please enter a valid url of Poster image for the movie</span>
+        </div>
+        <!-- movie poster ends here -->
+        <p class="help-block alert alert-info text-center">By submitting the data, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. In deleniti nisi nobis atque repudiandae, commodi obcaecati
+          accusantium asperiores dolorum incidunt sapiente neque magnam nulla maiores deserunt velit natus similique soluta?
+        </p>
+        <!-- disclaimer text ends here -->
+        <button type="submit" class="btn btn-default btn-block" [disabled]="!f.valid">Submit</button>
+         <!-- ^^^^^ submit button remains disabled untill the form is valid  -->
+        <button type="button" class="btn btn-default btn-block" [disabled]="!f.touched" (click)="reset()">Reset</button>
+      </form>
+    </div>
+  </div>
+</section>
+<section class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">Movie List</div>
+    <div class="panel-body">
+      <!-- hides the table if the moviesArr length is less than 0 -->
+      <table class="table" *ngIf="moviesArr.length>0">
+        <thead>
+          <tr>
+            <th class="col-md-1">#</th>
+            <th class="col-md-3">Movie Poster</th>
+            <th class="col-md-2">Movie Name</th>
+            <th class="col-md-2">Movie Rating</th>
+            <th class="col-md-3">Description</th>
+            <th class="col-md-1">Release Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- structural directive ngFor displays the data in the view -->
+          <tr *ngFor="let movie of moviesArr; let i = index" [ratingVal]="movie.rating" appHover>
+            <td>{{i+1}}</td>
+            <td><img src="{{movie.images}}" class="img-responsive" alt="{{movie.name}} Poster"></td>
+            <td>{{movie.name}}</td>
+            <td><span class="glyphicon glyphicon-star" *ngFor="let star of movie.ratingArr" [ratingVal]="movie.rating" appStar></span></td>
+            <td>{{movie.description}}</td>
+            <td>{{movie.releaseDate}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
